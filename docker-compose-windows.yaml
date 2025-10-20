@@ -80,16 +80,13 @@ services:
     image: ${DOCKER_HUB_REPO_BE}-liquibase:${DOCKER_IMAGE_TAG_BE}
     container_name: ${DOCKER_CONTAINER_NAME}-liquibase
     hostname: ${DOCKER_HUB_REPO_BE}-liquibase
-    env_file:
-      - .env
+    env_file: [.env]
     restart: "no"
-    networks:
-      - morphus
+    networks: [morphus]
     logging:
       driver: "json-file"
-      options:
-        max-size: "500m"
-        max-file: "1"
+      options: { max-size: "500m", max-file: "1" }
+    profiles: ["migrate"]  
 
   liquibase-depends-postgres:
     extends:
@@ -97,7 +94,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    profiles: ["with-postgres"]
+    profiles: ["with-postgres","migrate"]  
+
 
   #-------------------------------------Backend-------------------------------------
   api-gateway:
