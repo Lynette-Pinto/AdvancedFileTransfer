@@ -46,7 +46,7 @@ services:
       POSTGRES_PASSWORD: ${AIRFLOW_DB_PASSWORD}
       POSTGRES_DB: ${AIRFLOW_DB_NAME}
     volumes:
-      - ${PGDATA_HOST_DIR:-C:/var/morphus/database/postgres}:/var/lib/postgresql/data
+      - "${PGDATA_HOST_DIR:-C:/var/morphus/database/postgres}:/var/lib/postgresql/data"
     healthcheck:
       test: ["CMD-SHELL","pg_isready -U ${AIRFLOW_DB_USER} -d ${AIRFLOW_DB_NAME} -h localhost -p 5432"]
       interval: 10s
