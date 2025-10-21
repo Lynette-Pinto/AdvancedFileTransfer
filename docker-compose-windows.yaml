@@ -19,14 +19,14 @@ x-airflow-common:
     AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW__WEBSERVER__SECRET_KEY}
     _PIP_ADDITIONAL_REQUIREMENTS: ${AIRFLOW_PIP_ADDITIONAL_REQUIREMENTS:-}
   volumes:
-    - ${AIRFLOW_PROJ_DIR:-C:/var/airflow}/dags:/var/airflow/dags
-    - ${AIRFLOW_PROJ_DIR:-C:/var/airflow}/logs:/var/airflow/logs
-    - ${AIRFLOW_PROJ_DIR:-C:/var/airflow}/config:/var/airflow/config
-    - ${AIRFLOW_PROJ_DIR:-C:/var/airflow}/plugins:/var/airflow/plugins
-    - ${AIRFLOW_PROJ_DIR:-C:/var/airflow}/test:/var/airflow/test
-    - ${AIRFLOW_PROJ_DIR:-C:/var/airflow}/scripts:/var/airflow/scripts
-    - ${AIRFLOW_PROJ_DIR:-C:/var/airflow}/api:/var/airflow/api
-    - ${AIRFLOW_PROJ_DIR:-C:/var/airflow}/dag_json_data:/var/airflow/dag_json_data
+    - "${AIRFLOW_PROJ_DIR:-C:/var/airflow}/dags:/var/airflow/dags"
+    - "${AIRFLOW_PROJ_DIR:-C:/var/airflow}/logs:/var/airflow/logs"
+    - "${AIRFLOW_PROJ_DIR:-C:/var/airflow}/config:/var/airflow/config"
+    - "${AIRFLOW_PROJ_DIR:-C:/var/airflow}/plugins:/var/airflow/plugins"
+    - "${AIRFLOW_PROJ_DIR:-C:/var/airflow}/test:/var/airflow/test"
+    - "${AIRFLOW_PROJ_DIR:-C:/var/airflow}/scripts:/var/airflow/scripts"
+    - "${AIRFLOW_PROJ_DIR:-C:/var/airflow}/api:/var/airflow/api"
+    - "${AIRFLOW_PROJ_DIR:-C:/var/airflow}/dag_json_data:/var/airflow/dag_json_data"
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -76,8 +76,8 @@ services:
 
   liquibase:
     image: ${DOCKER_HUB_REPO_BE}-liquibase:${DOCKER_IMAGE_TAG_BE}
-    container_name: ${DOCKER_CONTAINER_NAME}-liquibase
-    hostname: ${DOCKER_HUB_REPO_BE}-liquibase
+    container_name: ${DOCKER_CONTAINER_NAME_BE}-liquibase
+    hostname: ${DOCKER_CONTAINER_NAME_BE}-liquibase
     env_file: [.env]
     restart: "no"
     networks: [morphus]
@@ -104,7 +104,7 @@ services:
     hostname: ${DOCKER_CONTAINER_NAME_BE}-api-gateway
     restart: always
     volumes:
-      - C:/var/morphus/logs/api-gateway:/app/logs
+      - "C:/var/morphus/logs/api-gateway:/app/logs"
     networks: [morphus]
     logging:
       driver: "json-file"
@@ -129,8 +129,8 @@ services:
     hostname: ${DOCKER_CONTAINER_NAME_BE}-auth
     restart: always
     volumes:
-      - C:/var/morphus/logs/auth:/app/logs
-      - C:/var/morphus/.ver:/var/morphus/.ver
+      - "C:/var/morphus/logs/auth:/app/logs"
+      - "C:/var/morphus/.ver:/var/morphus/.ver"
     logging:
       driver: "json-file"
       options:
@@ -154,7 +154,7 @@ services:
     env_file: [.env]
     hostname: ${DOCKER_CONTAINER_NAME_BE}-user-access-management
     volumes:
-      - C:/var/morphus/logs/user-access-management:/app/logs
+      - "C:/var/morphus/logs/user-access-management:/app/logs"
     restart: always
     logging:
       driver: "json-file"
@@ -179,7 +179,7 @@ services:
     env_file: [.env]
     hostname: ${DOCKER_CONTAINER_NAME_BE}-metadata
     volumes:
-      - C:/var/morphus/logs/metadata:/app/logs
+      - "C:/var/morphus/logs/metadata:/app/logs"
     restart: always
     logging:
       driver: "json-file"
@@ -204,7 +204,7 @@ services:
     env_file: [.env]
     hostname: ${DOCKER_CONTAINER_NAME_BE}-email-notification
     volumes:
-      - C:/var/morphus/logs/metadata:/app/logs
+      - "C:/var/morphus/logs/metadata:/app/logs"
     restart: always
     logging:
       driver: "json-file"
@@ -252,8 +252,8 @@ services:
     working_dir: /scripts
     restart: always
     volumes:
-      - ${AIRFLOW_PROJ_DIR:-C:/var/airflow}/scripts:/scripts
-      - ${DAG_JSON_DATA_DIR:-C:/var/airflow/dag_json_data}:/var/airflow/dag_json_data
+      - "${AIRFLOW_PROJ_DIR:-C:/var/airflow}/scripts:/scripts"
+      - "${DAG_JSON_DATA_DIR:-C:/var/airflow/dag_json_data}:/var/airflow/dag_json_data"
     networks: [morphus]
     depends_on:
       <<: *airflow-common-depends-on
@@ -390,7 +390,7 @@ services:
   airflow-cli:
     <<: *airflow-common
     profiles: [debug]
-    container_name: ${DOCKER_HUB_REPO_AIRFLOW}-airflow-cli
+    container_name: ${DOCKER_CONTAINER_NAME_AF}-cli
     environment:
       <<: *airflow-common-env
       CONNECTION_CHECK_MAX_COUNT: "0"
@@ -446,7 +446,7 @@ services:
       - metadata
       - email-notification  
     volumes:
-      - C:/var/morphus/logs/ui:/var/log/nginx
+      - "C:/var/morphus/logs/ui:/var/log/nginx"
     networks: [morphus]
 
 networks:
