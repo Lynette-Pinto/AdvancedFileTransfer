@@ -73,7 +73,6 @@ services:
   #   logging:
   #     driver: "json-file"
   #     options: { max-size: "500m", max-file: "1" }
-
   liquibase:
     image: ${DOCKER_HUB_REPO_BE}-liquibase:${DOCKER_IMAGE_TAG_BE}
     container_name: ${DOCKER_CONTAINER_NAME_BE}-liquibase
@@ -83,10 +82,9 @@ services:
     networks: [morphus]
     logging:
       driver: "json-file"
-      options: { max-size: "500m", max-file: "1" }
-
-
- 
+      options:
+        max-size: "500m"
+        max-file: "1"
 
 
   #-------------------------------------Backend-------------------------------------
